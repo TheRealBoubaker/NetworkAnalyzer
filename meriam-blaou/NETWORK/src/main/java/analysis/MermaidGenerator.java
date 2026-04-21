@@ -5,11 +5,6 @@ import java.util.List;
 
 public class MermaidGenerator {
 
-    // ─────────────────────────────────────────────────
-    // TÂCHE 2 : Générer code Mermaid sequenceDiagram
-    // ->>  = requête  (flèche pleine)
-    // -->> = réponse  (flèche pointillée)
-    // ─────────────────────────────────────────────────
     public static String generer(
             List<HttpFrame> paquets,
             String ipA,

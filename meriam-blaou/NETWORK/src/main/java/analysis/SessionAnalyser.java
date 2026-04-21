@@ -6,10 +6,6 @@ import java.util.List;
 
 public class SessionAnalyser {
 
-    // ─────────────────────────────────────────────────
-    // TÂCHE 1 : Paquets de la même session
-    // Filtre par IP source + IP destination + intervalle
-    // ─────────────────────────────────────────────────
     public static List<HttpFrame> getPaquetsSession(
             List<HttpFrame> toutes,
             String ipA,
@@ -34,11 +30,6 @@ public class SessionAnalyser {
         }
         return resultat;
     }
-
-    // ─────────────────────────────────────────────────
-    // TÂCHE 3 : Requêtes / Réponses HTTP
-    // Groupe chaque requête avec sa réponse + délai ms
-    // ─────────────────────────────────────────────────
     public static String getRequetesReponses(
             List<HttpFrame> paquets) {
 

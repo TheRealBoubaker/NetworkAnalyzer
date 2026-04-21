@@ -16,24 +16,16 @@ import java.util.List;
 
 public class SessionPanel extends JPanel {
 
-    // Liste des paquets fournie par le Dashboard de ton ami
     private List<HttpFrame> trames;
 
-    // Champs de filtre
     private JTextField champIpA   = new JTextField("", 13);
     private JTextField champIpB   = new JTextField("", 13);
     private JTextField champDebut = new JTextField("00:00:00", 9);
     private JTextField champFin   = new JTextField("23:59:59", 9);
 
-    // Composants des onglets
     private DefaultTableModel tableModel;
     private JTextArea         zoneMermaid;
     private JTextArea         zoneReqRep;
-
-    // ─────────────────────────────────────────────────
-    // Constructeur : reçoit la liste de paquets
-    // du Dashboard de ton ami
-    // ─────────────────────────────────────────────────
     public SessionPanel(List<HttpFrame> trames) {
         this.trames = trames;
         setLayout(new BorderLayout(5, 5));
@@ -50,9 +42,6 @@ public class SessionPanel extends JPanel {
         add(onglets, BorderLayout.CENTER);
     }
 
-    // ─────────────────────────────────────────────────
-    // Barre de filtre : IP A, IP B, heure début, fin
-    // ─────────────────────────────────────────────────
     private JPanel creerBarreFiltre() {
         JPanel p = new JPanel(
                 new FlowLayout(FlowLayout.LEFT, 8, 6));
@@ -76,9 +65,6 @@ public class SessionPanel extends JPanel {
         return p;
     }
 
-    // ─────────────────────────────────────────────────
-    // Onglet 1 : Tableau des paquets de la session
-    // ─────────────────────────────────────────────────
     private JPanel creerOngletPaquets() {
         JPanel p = new JPanel(new BorderLayout());
 
@@ -100,7 +86,7 @@ public class SessionPanel extends JPanel {
         table.getTableHeader().setFont(
                 new Font("SansSerif", Font.BOLD, 12));
 
-        // Largeur des colonnes
+
         table.getColumnModel().getColumn(0).setPreferredWidth(40);
         table.getColumnModel().getColumn(1).setPreferredWidth(120);
         table.getColumnModel().getColumn(2).setPreferredWidth(70);
@@ -120,9 +106,6 @@ public class SessionPanel extends JPanel {
         return p;
     }
 
-    // ─────────────────────────────────────────────────
-    // Onglet 2 : Diagramme de séquence Mermaid
-    // ─────────────────────────────────────────────────
     private JPanel creerOngletSequence() {
         JPanel p = new JPanel(new BorderLayout(5, 5));
 
@@ -142,10 +125,6 @@ public class SessionPanel extends JPanel {
         p.add(btnOuvrir, BorderLayout.SOUTH);
         return p;
     }
-
-    // ─────────────────────────────────────────────────
-    // Onglet 3 : Requêtes / Réponses HTTP
-    // ─────────────────────────────────────────────────
     private JPanel creerOngletReqRep() {
         JPanel p = new JPanel(new BorderLayout());
 
@@ -158,9 +137,6 @@ public class SessionPanel extends JPanel {
         return p;
     }
 
-    // ─────────────────────────────────────────────────
-    // ACTION : Rechercher et remplir les 3 onglets
-    // ─────────────────────────────────────────────────
     private void rechercherSession() {
 
         String ipA    = champIpA.getText().trim();
@@ -176,7 +152,6 @@ public class SessionPanel extends JPanel {
             return;
         }
 
-        // Récupérer les paquets filtrés
         List<HttpFrame> paquets =
                 SessionAnalyser.getPaquetsSession(
                         trames, ipA, ipB, startMs, endMs);
@@ -193,7 +168,6 @@ public class SessionPanel extends JPanel {
             });
         }
 
-        // ── Onglet 2 : générer Mermaid ──
         if (paquets.isEmpty()) {
             zoneMermaid.setText("Aucun paquet trouvé.");
         } else {
@@ -201,11 +175,9 @@ public class SessionPanel extends JPanel {
                     MermaidGenerator.generer(paquets, ipA, ipB));
         }
 
-        // ── Onglet 3 : req/rép ──
         zoneReqRep.setText(
                 SessionAnalyser.getRequetesReponses(paquets));
 
-        // Message si vide
         if (paquets.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                     "Aucun paquet trouvé entre\n"
@@ -216,9 +188,6 @@ public class SessionPanel extends JPanel {
         }
     }
 
-    // ─────────────────────────────────────────────────
-    // Ouvrir le diagramme Mermaid dans le navigateur
-    // ─────────────────────────────────────────────────
     private void ouvrirDiagramme() {
 
         String code = zoneMermaid.getText();
@@ -245,10 +214,6 @@ public class SessionPanel extends JPanel {
         }
     }
 
-    // ─────────────────────────────────────────────────
-    // Construire HTML avec Mermaid.js
-    // Même code JS que l'exemple du prof
-    // ─────────────────────────────────────────────────
     private String buildHtml(String codeMermaid) {
         return "<!DOCTYPE html>\n"
                 + "<html lang='fr'>\n"
@@ -302,9 +267,6 @@ public class SessionPanel extends JPanel {
                 + "</html>\n";
     }
 
-    // ─────────────────────────────────────────────────
-    // Convertir "HH:mm:ss" en timestamp ms
-    // ─────────────────────────────────────────────────
     private long heureVersMs(String heure) {
         try {
             SimpleDateFormat sdf =
@@ -326,10 +288,6 @@ public class SessionPanel extends JPanel {
         }
     }
 
-    // ─────────────────────────────────────────────────
-    // Mettre à jour la liste depuis le Dashboard
-    // Appelé par le Dashboard de ton ami
-    // ─────────────────────────────────────────────────
     public void setTrames(List<HttpFrame> trames) {
         this.trames = trames;
     }
