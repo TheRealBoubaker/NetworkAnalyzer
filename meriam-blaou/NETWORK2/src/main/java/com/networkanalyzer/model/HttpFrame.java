@@ -1,4 +1,4 @@
-package model;
+package com.networkanalyzer.model;
 
 public class HttpFrame {
 
@@ -44,4 +44,10 @@ public class HttpFrame {
     public String getUrl()       { return url;       }
     public int    getTaille()    { return taille;    }
     public long   getTimestamp() { return timestamp; }
+
+    @Override
+    public String toString() {
+        return String.format("[%d] %s:%d → %s:%d  %s %s (%d bytes)",
+                numero, srcIp, srcPort, dstIp, dstPort, methode, url, taille);
+    }
 }
